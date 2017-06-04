@@ -1,0 +1,83 @@
+ git init creates a new Git repository
+    git status inspects the contents of the working directory and staging area
+    git add adds files from the working directory to the staging area
+    git diff shows the difference between the working directory and the staging area
+    git commit permanently stores file changes from the staging area in the repository
+    git log shows a list of all previous commits
+
+
+    git show HEAD
+    git checkout HEAD filename: Discards changes in the working directory.
+    git reset HEAD filename: Unstages file changes in the staging area.
+    git reset SHA: Can be used to reset to a previous commit in your commit history.
+
+
+    git branch: Lists all a Git project's branches.
+    git branch branch_name: Creates a new branch.
+    git checkout branch_name: Used to switch from one branch to another.
+    git merge branch_name: Used to join file changes from one branch to another.
+    git branch -d branch_name: Deletes the branch specified.
+
+
+    git clone: Creates a local copy of a remote.
+    git remote -v: Lists a Git project's remotes.
+    git fetch: Fetches work from the remote into the local copy.
+    git merge origin/master: Merges origin/master into your local branch.
+    git push origin <branch_name>: Pushes a local branch to the origin remote.
+
+       #Setting up new repo
+
+
+
+    Use your OS to delete the .git folder inside of the project folder that you want to commit. This will give you a clean slate to work with. This is also a good time to make a .gitignore file inside the project folder. This can be a copy of the .gitignore created when you created the repository on github.com. Doing this copy will avoid deleting it when you update the github.com repository.
+
+    Open Git Bash and navigate to the folder you just deleted the .git folder from.
+
+    Run git init. This sets up a local repository in the folder you're in.
+
+    Run git remote add [alias] https://github.com/[gitUserName]/[RepoName].git. [alias] can be anything you want. The [alias] is meant to tie to the local repository, so the machine name works well for an [alias]. The URL can be found on github.com, along the top ensure that the HTTP button out of HTTP|SSH|Git Read-Only is clicked. The git:// URL didn't work for me.
+
+    Run git pull [alias] master. This will update your local repository and avoid some merging conflicts.
+
+    Run git add .
+
+    Run git commit -m 'first code commit'
+
+    Run git push [alias] master
+
+        #Setting SSH key
+
+    To see your repo URL, run:
+
+    git remote show origin
+
+    You can change the URL with:
+
+    git remote set-url origin git+ssh://git@github.com/username/reponame.git
+ 
+	#######################################
+
+	git fetch --all
+
+	Then, you have two options:
+
+	git reset --hard origin/master
+
+	OR If you are on some other branch:
+
+	git reset --hard origin/<branch_name>
+
+	Explanation:
+
+	git fetch downloads the latest from remote without trying to merge or rebase anything.
+
+	Then the git reset resets the master branch to what you just fetched. The --hard option changes all the files in your working tree to match the files in origin/master
+
+	[*]: It's worth noting that it is possible to maintain current local commits by creating a branch from master before resetting:
+
+	git checkout master
+	git branch new-branch-to-save-current-commits
+	git fetch --all
+	git reset --hard origin/master
+
+	After this, all of the old commits will be kept in new-branch-to-save-current-commits. Uncommitted changes however (even staged), will be lost. Make sure to stash and commit anything you need.

@@ -1,0 +1,2 @@
+# Razno
+Razlicite komande

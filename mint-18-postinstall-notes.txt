@@ -1,0 +1,55 @@
+projekat za sync svih mojih linux racunara preko gita:
+- .zshrc, srediti
+- .oh-my-zsh/themes/my-norm.zsh-theme
+- sublime config koji linkuje na folder unutar git configa
+- scripts folder
+- post install
+- .ssh dir?
+- ~/.gitconfig
+
+
+sudo apt-get update ; sudo apt-get upgrade
+
+sudo apt-get install 'mint-backgrounds-*' apache2 arj build-essential chromium-browser deluge expect gir1.2-gtop-2.0 gnupg2 gpodder guake htop hunspell-sr hyphen-sr iptux jpegoptim kupfer kdelibs-bin kdelibs5-data kdelibs5-plugins language-pack-sr libapache2-mod-php lunzip lynx lzip meld mysql-server openssh-server p7zip-rar php php-cli php-common php-gd php-gmp php-ldap php-mcrypt php-mysql php7.0-curl php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-pspell php7.0-readline php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xml php7.0-xmlrpc playonlinux poedit python-pip python3-setuptools radiotray rar scantailor sharutils skype sublime-text tree vagrant virtualbox virtualbox-qt virtualbox-guest-additions-iso x11-utils xsel zenity zsh git python3-setuptools python-setuptools
+
+# own cloud client
+sudo sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_16.04/ /' >> /etc/apt/sources.list.d/owncloud-client.list" ; wget http://download.opensuse.org/repositories/isv:ownCloud:desktop/Ubuntu_16.04/Release.key ; sudo apt-key add - < Release.key ; rm Release.key
+sudo apt-get update
+sudo apt-get install owncloud-client
+
+# mysql, apache config
+sudo mysql_secure_installation
+sudo a2enmod rewrite && sudo service apache2 restart
+
+# composer
+# iskopirati nov kod sa adrese https://getcomposer.org/download/ koji je nali ovom:
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '55d6ead61b29c7bdee5cccfb50076874187bd9f21f65d8991d46ec5cc90518f447387fb9f76ebae1fbbacf329e583e30') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');
+
+# na kraju pokrenuti zavrsnu komandu 
+sudo mv composer.phar /usr/bin/composer
+
+# node
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - ; sudo apt-get install -y nodejs
+sudo npm install -g jshint gulp yo csslint bower
+
+# wp cli
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar ; chmod +x wp-cli.phar ; sudo mv wp-cli.phar /usr/local/bin/wp
+
+# python pip packages
+sudo apt-get install python-pip
+sudo pip install --upgrade pip TeamSpeak3 youtube_dl git-up
+
+# config
+sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+chsh -s $(which zsh)
+
+# dodati u sudo listu
+EDITOR=nano sudo visudo 
+vlazic ALL=(ALL) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown, /usr/sbin/pm-suspend
+
+# konfigurisanje gita. staviti svoj email i ime
+ git config --global user.email "vlazic@gmail.com"
+ git config --global user.name "Vladimir Lazic"

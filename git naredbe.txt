@@ -1,0 +1,82 @@
+﻿Galis projekat se nalazi u folderu: 
+/var/www/galis.dev (u Galileju)
+C:\wamp\www…. (kod kuce)
+
+Preuzimanje izmena sa servera
+- ulazimo u direktorijum projekta sa: cd /var/www/galis.dev
+- git pull --all
+- git pull origin master
+
+Slanje izmena na server
+- ulazimo u direktorijum projekta sa: cd /var/www/galis.dev
+- registrujemo izmene sa: git add .
+- komitujemo (potvrdjujemo izmene): git commit -m “opis izmene…...”
+- saljemo izmene na server: git push
+
+Proveriti sta je izmenjeno u medjuvremenu (poredjenje lokalnog repozitorijuma sa serverom)
+- ulazimo u direktorijum projekta sa: cd /var/www/galis.dev
+- // mozda treba prvo git fetch
+- git diff origin/master master
+
+Pregled prethodnih commit-ova
+- git log 
+- glog alias na: git log --pretty=format:"%h %ar | %Cred%s%d%Creset" --graph --date=short
+
+Uporedjivanje commit-ova
+- prvo pogledamo listu komitova sa: git log
+- git diff <hash comita a> <hash comita b> 
+- ako hocemo da pogledamo samo za neki(e) fajl: git diff <hash comita a> <hash comita b> fajl_X fajl_Y ...
+
+Kada hocemo da povucemo sa servera promene bez obzira sta je radjeno na lokalu
+- git fetch --all
+- git reset --hard origin/master
+
+Pravljenje novog git repozitorijuma u lokalu i na serveru
+- Kreiramo .gitignore fajl u koga stavljamo listu fajlova koje se razlikuju od kompjutera do kompjutera kao sto su konfiguracioni fajlovi i log direktorijum
+- git init
+- Pravimo prvi komit sa git add . ; git commit -m “TEKST PRVOG KOMITA”
+- Pravimo repozitorijum na serveru:
+-- Logujemo se preko putija ili linux konzole na server kao git korisnik: ssh git@git.galilej.com ili ssh root@git.galilej.com pa su git pa cd
+-- cd repos
+-- git init --bare NAZIV_REPOZITORIJUMA.git
+--Git server je u stanju da pokrene neki proces automatizacije cim primi novi komit. Ovo je korisno posto mozemo da automatski prekopiramo nove izmene u direktorijum sajta (/var/www/NAZIV_SAJTA). Ova automatizacija se devinise u fajlu /home/git/repos/NAZIV_REPOZITORIJUMA/hooks/post-receive
+-- Nazad na desktop racunaru (lokalu) dodajemo novokreiranu adresu git repozitorijuma: git remote add origin git@git.galilej.com:repos/NAZIV_REPOZITORIJUMA.git
+-- Saljemo prvi komit na server: git push --set-upstream origin master
+-- Na drugom racunaru kasnije mozemo da kloniramo taj repozitorijum sa: git clone git@git.galilej.com:repos/NAZIV_REPOZITORIJUMA.git .
+
+Spanjanje (merge) neke grane sa master granom
+- udjemo u glavnu granu (ako vec nismo tu): git checkout master
+- spojimo grane: git merge TEST-GRANA
+- ako je doslo do merge konflikta, pokrecemo git mergetool ; ako nije podesen merge tool, kucati git config --global merge.tool meld
+- ako hocemo, mozemo da posaljemo novo stanje na server: git push (ili git push all)
+- ako hocemo, mozemo da obrisemo test granu: git branch -d TEST-GRANA
+- ako postoji i remote verzija te grane, brisemo je na sledeci nacin: git push origin --delete TEST-GRANA
+
+Pravljenje nove grane
+- git checkout -b TEST-GRANA
+- iz grane u granu se prebacujemo sa komandom: git checkout master ili git checkout TEST-GRANA
+- ako zelimo da nasa nova lokalna grana bude poslata na server, kako bi je i drugi videli kucamo: git push origin TEST-GRANA . ovim predpostavljamo da je naziv naseg servera 'origin' ili u nasem slucaju mccloud varijanta repozitorijuma, ako zelimo da je posaljemo i na 'public' odnosno 64 server, onda kucamo i git push public TEST-GRANA
+#################################################
+Za Slobu:
+Kada zbog migracije baze dodje do brisanja fajlova koristimo - git checkout .
+
+Kad hocemo da lokalnu granu posaljemo na server (kako bi npr mogli da na toj grani radimo i kod kuce i na poslu):
+- git push --set-upstream origin naziv-lokalne-grane
+- kad hocemo posle da povucemo tu granu:
+-- git fetch
+-- git checkout naziv-lokalne-grane
+#################################################
+Pozivanje grane sa servera koju nemamo na lokalu:
+git checkout -b izvestaj_nastavnici origin/izvestaj_nastavnici
+#################################################
+Ako hocemo da povratimo slucajno obrisani fajl
+git checkout -- public_html/pretraga.php
+#################################################
+uporedno poredjenje dve grane i transfer linija i fajlova po zelji (u vizuelnom diff programu, npr meld):
+git diff grana_iz_koje_zelimo_da_prebacimo_linije..grana_u_koju_zelimo_da_prebacimo_linije
+#################################################
+kopiranje fajlova ili foldera iz jedne grane u drugu granu
+npr ako zelimo da prekopiramo migracije iz jedne grane u drugu
+git checkout grana_iz_koje_zelimo_da_prebacimo_fajlove_i_foldere -- putanja_do/fajla.txt
+git checkout grana_iz_koje_zelimo_da_prebacimo_fajlove_i_foldere -- putanja_do/foldera
+#################################################
